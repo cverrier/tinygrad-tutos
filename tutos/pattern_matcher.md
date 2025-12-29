@@ -1,9 +1,10 @@
 # Understanding tinygrad's Pattern Matcher
 
-This tutorial teaches tinygrad's `PatternMatcher` system from first principles. `PatternMatcher` is the core mechanism for graph transformations throughout tinygrad - from symbolic simplification to gradient computation to code generation.
-
 > [!NOTE]
 > This tutorial has been built around tinygrad's commit [f509019](https://github.com/tinygrad/tinygrad/tree/f5090192c84760be1227f7e3c4f99ad0603117ae) with a Python 3.11 virtual environment. Since tinygrad is evolving rapidly, if you're following along in code, make sure to checkout that commit in order to avoid any discrepancies.
+
+This tutorial teaches tinygrad's [`PatternMatcher`](https://github.com/tinygrad/tinygrad/blob/f5090192c84760be1227f7e3c4f99ad0603117ae/tinygrad/uop/ops.py#L1034-L1059) system from first principles. `PatternMatcher` is the core mechanism for graph transformations throughout tinygrad - from symbolic simplification to gradient computation to code generation.
+
 
 ## Table of Contents
 
