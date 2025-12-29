@@ -1,2 +1,2 @@
 # tinygrad-tutos
-Tutorials about tinygrad, an end-to-end deep learning stack
+Tutorials about [tinygrad](https://github.com/tinygrad/tinygrad), an end-to-end deep learning stack.
