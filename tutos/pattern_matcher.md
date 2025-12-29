@@ -254,7 +254,6 @@ from tinygrad.uop.ops import PatternMatcher, UPat
 pm = PatternMatcher([
   # Match ADD where second arg is constant 0
   (UPat(Ops.ADD, src=(p:=UPat.var("x"), UPat.cvar("c", p.dtype, arg=0))), lambda x, c: x),
-  # (UPat.var("x") + 0, lambda x: x),
 ])
 
 a = UOp.const(dtypes.int, 42)
