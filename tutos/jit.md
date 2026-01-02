@@ -147,12 +147,12 @@ from tinygrad import Tensor, TinyJit
 
 @TinyJit
 def add(a, b):
-    print("  Function body running")
-    return a + b
+  print("  Function body running")
+  return a + b
 
 for i in range(4):
-    print(f"Call {i+1}:")
-    add(Tensor.empty(4, 4), Tensor.empty(4, 4))
+  print(f"Call {i+1}:")
+  add(Tensor.empty(4, 4), Tensor.empty(4, 4))
 ```
 
 The output is:
@@ -175,20 +175,20 @@ The warmup phase (call 1) allows lazy initialization to happen before capture:
 from tinygrad import Tensor, TinyJit
 
 class Model:
-    def __init__(self):
-        self.weights = None
+  def __init__(self):
+    self.weights = None
 
-    @TinyJit
-    def forward(self, x):
-        if self.weights is None:
-            print("  Initializing weights")
-            self.weights = Tensor.randn(100, 100)
-        return x @ self.weights
+  @TinyJit
+  def forward(self, x):
+    if self.weights is None:
+      print("  Initializing weights")
+      self.weights = Tensor.randn(100, 100)
+    return x @ self.weights
 
 model = Model()
 for i in range(3):
-    print(f"Call {i+1}:")
-    model.forward(Tensor.randn(32, 100))
+  print(f"Call {i+1}:")
+  model.forward(Tensor.randn(32, 100))
 ```
 
 The output is:
@@ -217,7 +217,7 @@ weights = Tensor([1, 2, 3])
 
 @TinyJit
 def f(x):
-    return x + weights
+  return x + weights
 
 # Warmup + capture
 f(Tensor([10, 10, 10]))
@@ -251,7 +251,7 @@ from tinygrad import Tensor, TinyJit
 
 @TinyJit
 def add(a, b):
-    return a + b
+  return a + b
 
 # Warmup + capture with shape (100, 100)
 add(Tensor.randn(100, 100), Tensor.randn(100, 100))
@@ -287,23 +287,23 @@ from tinygrad import Tensor, TinyJit, Variable
 
 @TinyJit
 def sum_first_n(x):
-    return x.sum()
+  return x.sum()
 
 base = Tensor.arange(10)
 for i in range(1, 6):
-    # Create a Variable: name="n", range=[1,10], current value=i
-    n = Variable("n", 1, 10).bind(i)
-    result = sum_first_n(base[:n])
-    print(f"sum of first {i}: {result.item()}")
+  # Create a Variable: name="n", range=[1,10], current value=i
+  n = Variable("n", 1, 10).bind(i)
+  result = sum_first_n(base[:n])
+  print(f"sum of first {i}: {result.item()}")
 ```
 
 which prints:
 ```
-Sum of first 1: 0
-Sum of first 2: 1
-Sum of first 3: 3
-Sum of first 4: 6
-Sum of first 5: 10
+sum of first 1: 0
+sum of first 2: 1
+sum of first 3: 3
+sum of first 4: 6
+sum of first 5: 10
 ```
 
 One kernel handles all sizes. During capture, the kernel is compiled with a symbolic loop bound (run with `DEBUG=4` to see the generated source code):
@@ -339,7 +339,7 @@ from tinygrad import Tensor, TinyJit
 
 @TinyJit
 def f(x):
-    return x.sum()
+  return x.sum()
 
 r1 = f(Tensor([1, 1]))  # warmup
 r2 = f(Tensor([2, 2]))  # capture
@@ -375,7 +375,7 @@ multiplier = 10
 
 @TinyJit
 def f(x):
-    return x * multiplier
+  return x * multiplier
 
 f(Tensor([5]))  # warmup
 f(Tensor([5]))  # capture
@@ -391,7 +391,7 @@ from tinygrad import Tensor
 
 @TinyJit
 def f(x: Tensor, multiplier: Tensor):  # pass multiplier as a tinygrad Tensor
-    return x * multiplier
+  return x * multiplier
 ```
 
 ### Pitfall 3: Conditional Branches are Frozen
@@ -401,10 +401,10 @@ from tinygrad import Tensor, TinyJit
 
 @TinyJit
 def f(x, use_square):
-    if use_square:
-        return (x * x).realize()
-    else:
-        return (x * 2).realize()
+  if use_square:
+    return (x * x).realize()
+  else:
+    return (x * 2).realize()
 
 f(Tensor([3]), True)   # warmup - takes True branch
 f(Tensor([3]), False)  # capture - takes False branch
@@ -419,14 +419,14 @@ from tinygrad import Tensor, TinyJit
 
 @TinyJit
 def f(x, square_flag):  # square_flag is a tinygrad Tensor
-    squared = x * x
-    doubled = x * 2
-    return squared * square_flag + doubled * (1 - square_flag)
+  squared = x * x
+  doubled = x * 2
+  return squared * square_flag + doubled * (1 - square_flag)
 
-f(Tensor([3]), Tensor([True]))
-f(Tensor([3]), Tensor([False]))
+f(Tensor([3]), Tensor([1]))
+f(Tensor([3]), Tensor([0]))
 
-print(f(Tensor([3]), Tensor([True])).item())  # Prints 9
+print(f(Tensor([3]), Tensor([1])).item())  # Prints 9
 ```
 
 ### Pitfall 4: Tensors in Containers Aren't Tracked
@@ -436,7 +436,7 @@ from tinygrad import Tensor, TinyJit
 
 @TinyJit
 def f(a, tensor_list):
-    return (a + tensor_list[0]).realize()
+  return (a + tensor_list[0]).realize()
 
 a = Tensor([1, 1, 1])
 
@@ -456,7 +456,7 @@ from tinygrad import Tensor, TinyJit
 
 @TinyJit
 def f(a, b):
-    return a + b
+  return a + b
 
 t = Tensor([1, 2, 3])
 f(t, t)  # AssertionError: duplicate inputs to JIT
@@ -465,9 +465,9 @@ f(t, t)  # AssertionError: duplicate inputs to JIT
 I guess that JIT needs to know which input argument to use for each buffer slot in the cached kernels (if you are curious, see [tinygrad/engine/jit.py](https://github.com/tinygrad/tinygrad/blob/526fd4ec7104eda1ef8114e64d99b2788910a8fd/tinygrad/engine/jit.py#L67-L73)). So when calling the `TinyJit`-decorated function, each input argument must correspond to a unique buffer: tinygrad first calls `TinyJit.__call__` with the same input buffers `(t, t)`, which then calls `_prepare_jit_inputs` (see [reference](https://github.com/tinygrad/tinygrad/blob/526fd4ec7104eda1ef8114e64d99b2788910a8fd/tinygrad/engine/jit.py#L273-L274))
 
 ```python
-  def __call__(self, *args, **kwargs) -> ReturnType:
-    # Here, in our case, args = (t, t) (same buffers)
-    input_buffers, var_vals, names, st_vars_dtype_device = _prepare_jit_inputs(args, kwargs)
+def __call__(self, *args, **kwargs) -> ReturnType:
+  # Here, in our case, args = (t, t) (same buffers)
+  input_buffers, var_vals, names, st_vars_dtype_device = _prepare_jit_inputs(args, kwargs)
 ```
 
 which then processes the input arguments and checks for duplicates (see [reference](https://github.com/tinygrad/tinygrad/blob/526fd4ec7104eda1ef8114e64d99b2788910a8fd/tinygrad/engine/jit.py#L220-L228)):
@@ -501,7 +501,7 @@ from tinygrad import Tensor, TinyJit
 
 @TinyJit
 def f(a, b):
-    return a + b
+  return a + b
 
 x = Tensor([1, 2, 3])
 print(f(x, x.clone()).numpy())  # No error, prints [2 4 6]
@@ -523,19 +523,19 @@ from tinygrad import Tensor, TinyJit
 from tinygrad.helpers import Timing
 
 class Model:
-    def __init__(self):
-        self.w1 = Tensor.randn(100, 50)
-        self.w2 = Tensor.randn(50, 10)
+  def __init__(self):
+    self.w1 = Tensor.randn(100, 50)
+    self.w2 = Tensor.randn(50, 10)
 
-    @TinyJit
-    def forward(self, x):
-        return (x @ self.w1).relu() @ self.w2
+  @TinyJit
+  def forward(self, x):
+    return (x @ self.w1).relu() @ self.w2
 
 model = Model()
 for i in range(6):
-    x = Tensor.randn(32, 100)
-    with Timing(f"Call {i+1}: "):
-        out = model.forward(x)
+  x = Tensor.randn(32, 100)
+  with Timing(f"Call {i+1}: "):
+    out = model.forward(x)
 ```
 
 Running this code snippet without any `DEBUG` flags produces the following output:
@@ -551,7 +551,7 @@ Call 6:   1.04 ms
 Something seems odd here: from what you've learned so far, you should expect that call 3 should take a bit longer than call 2 (due to GPU computation graph building overhead), and calls 4-6 should be way faster. However, call 4 is much slower than call 3! Why is that? This is because GPU execution is asynchronous: when you call `model.forward(x)`, the CPU submits work to the GPU and immediately returns, without waiting for the GPU to finish. More precisely:
 1. Call 3 starts: the CPU submits a command to the GPU, and returns immediately: the timing for call 3 ends here, and seems fast (9.35 ms): but this time only measures how long it took for the CPU to submit the command (and not how long the GPU took to execute it).
 2. The GPU starts executing the command and is working in the background.
-3. Call 4 starts: the CPU tries to submit another command to the GPU, but the GPU is stil busy with the previous command (from call 3). Therefore, the CPU has to wait for the GPU to finish before it can submit the new command. This waiting time is included in the timing of call 4, making it appear much slower.
+3. Call 4 starts: the CPU tries to submit another command to the GPU, but the GPU is still busy with the previous command (from call 3). Therefore, the CPU has to wait for the GPU to finish before it can submit the new command. This waiting time is included in the timing of call 4, making it appear much slower.
 
 Now, if you run the same code snippet with `DEBUG=2`, you get:
 ```
