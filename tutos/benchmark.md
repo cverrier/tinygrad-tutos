@@ -340,7 +340,8 @@ for _ in range(5):
 # Measure
 GlobalCounters.reset()
 with Context(DEBUG=2):
-  result = ((a @ b).realize() + a).realize()  # Force to have two kernels
+  temp = (a @ b).realize()          # First kernel: matmul
+  result = (temp + a).realize()     # Second kernel: add
   Device[Device.DEFAULT].synchronize()
 
 print(f"Total kernel count: {GlobalCounters.kernel_count}")
