@@ -1,5 +1,7 @@
 # GPU Memory Fundamentals
 
+> [!NOTE]
+> This tutorial has been built around tinygrad's commit [526fd4e](https://github.com/tinygrad/tinygrad/tree/526fd4ec7104eda1ef8114e64d99b2788910a8fd) with a Python 3.11 virtual environment. Since tinygrad is evolving rapidly, if you're following along in code, make sure to checkout that commit in order to avoid any discrepancies.
 This tutorial explains GPU memory architecture and performance concepts, with practical examples using tinygrad.
 
 ## Table of Contents
