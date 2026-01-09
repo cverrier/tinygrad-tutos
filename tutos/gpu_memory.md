@@ -335,7 +335,7 @@ I am running on a [Apple M1 Pro 16-Core GPU](https://www.gpu-monkey.com/en/gpu-a
 I also want to make sure that the `15 GFLOPS` displayed in the logs are correct and match our calculations:
 - 1 FLOP corresponds to one addition in our case.
 - To do one addition, we need to load two 32-bit (*i.e.*, 4-byte) floats (one from `a`, one from `b`) from memory, then perform the addition, and finally store one 32-bit float (the result) back to memory: this is a total of 12 bytes transferred per FLOP (therefore, the arithmetic intensity is `1 FLOP / 12 bytes = 0.0833 FLOP/byte`, as we calculated earlier in the script).
-- Now, during each kernel execution, tinygrad shows that we have about 180 GB/s of effective memory bandwidth, *i.e.*, we transfer 180 × 10^9 bytes every second. Therefore, since we have a 1/12 FLOP/byte ratio, the maximum number of floating-point operations we can perform each second is `180 × 10^9 / 12 = 15 × 10^9` FLOP, which is also 15 GFLOP. So, we do 15 GFLOP per second, which matches the speed of 15 GFLOPS displayed by the logs.
+- Now, during each kernel execution, tinygrad shows that we have about 180 GB/s of effective memory bandwidth, *i.e.*, we transfer 180 × 10^9 bytes every second. Given an arithmetic intensity of `1 FLOP / 12 bytes = 0.0833 FLOP/byte`, the maximum number of floating-point operations we can perform each second is `180 × 10^9 / 12 = 15 × 10^9` FLOP, which is also 15 GFLOP. So, we do 15 GFLOP per second, which matches the speed of 15 GFLOPS displayed by the logs.
 
 ### Example 2: Compute-Bound Operation (Matrix Multiplication)
 
