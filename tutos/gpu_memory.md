@@ -194,9 +194,9 @@ Multiplying two 4096×4096 matrices:
 
 ```
 Operation: C = A @ B (matrix multiplication)
-- Read A: 4096² floats × 4 bytes = 64 MB
-- Read B: 4096² floats × 4 bytes = 64 MB
-- Write C: 4096² floats × 4 bytes = 64 MB
+- Read A: 4096^2 floats × 4 bytes = 64 MB
+- Read B: 4096^2 floats × 4 bytes = 64 MB
+- Write C: 4096^2 floats × 4 bytes = 64 MB
 - Total data movement: 192 MB
 - Total compute: 2 × 4096³ ≈ 137 billion FLOP
 ```
