@@ -13,7 +13,6 @@ This tutorial explains GPU memory architecture and performance concepts, with pr
 5. [Memory-Bound vs. Compute-Bound Operations](#memory-bound-vs-compute-bound-operations)
 6. [Arithmetic Intensity](#arithmetic-intensity)
 7. [Practical Examples with tinygrad](#practical-examples-with-tinygrad)
-8. [Profiling GPU Operations](#profiling-gpu-operations)
 
 ---
 
